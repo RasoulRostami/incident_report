@@ -9,9 +9,10 @@ https://docs.djangoproject.com/en/3.2/topics/settings/
 For the full list of settings and their values, see
 https://docs.djangoproject.com/en/3.2/ref/settings/
 """
-# TODO: dockerise and remove extra .env
-from pathlib import Path
 import os
+# TODO: dockerise and remove extra .env
+from datetime import timedelta
+from pathlib import Path
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -151,7 +152,7 @@ REST_FRAMEWORK = {
     'DEFAULT_PAGINATION_CLASS': 'helpers.pagination.StandardResultsSetPagination',
 }
 
-CELERY_BROKER_URL = "redis://" + os.environ.get("REDIS_LOCATION","127.0.0.1:6379/1")
+CELERY_BROKER_URL = "redis://" + os.environ.get("REDIS_LOCATION", "127.0.0.1:6379/1")
 CELERY_RESULT_BACKEND = "redis://" + os.environ.get("REDIS_LOCATION", "127.0.0.1:6379/1")
 
 CELERY_BEAT_SCHEDULE = {
@@ -164,4 +165,12 @@ CELERY_BEAT_SCHEDULE = {
 # Swagger
 SWAGGER_SETTINGS = {
     'DEFAULT_AUTO_SCHEMA_CLASS': 'helpers.swagger.CompoundTagsSchema',
+}
+
+SIMPLE_JWT = {
+    'ACCESS_TOKEN_LIFETIME': timedelta(minutes=int(os.environ.get('ACCESS_TOKEN_LIFETIME_MINUTES', 5))),
+    'REFRESH_TOKEN_LIFETIME': timedelta(days=int(os.environ.get('REFRESH_TOKEN_LIFETIME_DAYS', 1))),
+    'ALGORITHM': 'HS256',
+    'AUTH_HEADER_TYPES': ('Bearer',),
+    'AUTH_HEADER_NAME': 'HTTP_AUTHORIZATION',
 }

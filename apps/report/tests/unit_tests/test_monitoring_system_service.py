@@ -32,8 +32,7 @@ class MonitoringSystemServiceUnitTest(TestCase):
         monitoring_system_service = MonitoringSystemService(self.monitoring_system)
         url = monitoring_system_service._current_url()
         self.assertEqual(url.rsplit('?')[-1], f'start={_current_page}')
-
-        print(url)
+        self.assertIn('http', url)
 
     def test_update_request_data_after_field_request(self):
         _status = status.HTTP_400_BAD_REQUEST

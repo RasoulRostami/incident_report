@@ -8,7 +8,7 @@ from ...models import IncidentReport, MonitoringSystem
 from ...tasks import pull_results, pull_incident_report
 
 
-class TaskPullIncidentReport(TestCase):
+class TaskPullIncidentReportUnitTest(TestCase):
     """Test celery beat task"""
 
     @classmethod

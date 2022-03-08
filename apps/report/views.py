@@ -8,7 +8,6 @@ from .models import IncidentReport
 from .serializers import IncidentReportSerializer
 
 
-# todo add swagger
 class IncidentReportView(ListModelMixin, CreateModelMixin, GenericViewSet):
     queryset = IncidentReport.objects.all().select_related('monitoring_system')
     serializer_class = IncidentReportSerializer

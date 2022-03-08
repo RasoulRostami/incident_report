@@ -12,7 +12,7 @@ User = get_user_model()
 
 
 def pull_results(start, stop):
-    for system in MonitoringSystem.active_objects.all()[start, stop]:
+    for system in MonitoringSystem.active_objects.all()[start:stop]:
         monitoring_system_service = MonitoringSystemService(system)
         monitoring_system_service.pull_incident_report()
 
@@ -24,7 +24,7 @@ def pull_incident_report(*args, **kwargs):
     """
     step = math.ceil(MonitoringSystem.active_objects.all().count() / 4)
     threads = list()
-    for start in range(0, step * 3, step):
+    for start in range(0, step * 3 + 1, step):
         pull_results(start, start + step)
         thread = threading.Thread(target=pull_results, args=(start, start + step))
         threads.append(thread)
@@ -33,4 +33,4 @@ def pull_incident_report(*args, **kwargs):
     for thread in threads:
         thread.join()
 
-    print(f'Pull incident reports at {timezone.now()}')
+    return f'Pull incident reports at {timezone.now()}'

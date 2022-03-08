@@ -9,24 +9,23 @@ https://docs.djangoproject.com/en/3.2/topics/settings/
 For the full list of settings and their values, see
 https://docs.djangoproject.com/en/3.2/ref/settings/
 """
-
+# TODO: dockerise and remove extra .env
 from pathlib import Path
 import os
+
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
-
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/3.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = os.environ.get('SECRET_KEY')
+SECRET_KEY = os.environ.get('SECRET_KEY', 'Hello')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = os.environ.get('DEBUG')
+DEBUG = os.environ.get('DEBUG', True)
 
 ALLOWED_HOSTS = os.environ.get('ALLOWED_HOSTS', '*').split(',')
-
 
 # Application definition
 
@@ -39,6 +38,7 @@ DJANGO_APP = [
     'django.contrib.staticfiles',
     # third package
     'django_filters',
+    'drf_yasg',
 ]
 
 MY_APPS = [
@@ -76,7 +76,6 @@ TEMPLATES = [
 ]
 
 WSGI_APPLICATION = 'incident_report.wsgi.application'
-
 
 # Database
 # https://docs.djangoproject.com/en/3.2/ref/settings/#databases
@@ -118,7 +117,6 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
-
 # Internationalization
 # https://docs.djangoproject.com/en/3.2/topics/i18n/
 
@@ -131,7 +129,6 @@ USE_I18N = True
 USE_L10N = True
 
 USE_TZ = True
-
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/3.2/howto/static-files/
@@ -151,12 +148,11 @@ REST_FRAMEWORK = {
         'rest_framework_simplejwt.authentication.JWTAuthentication',
         'rest_framework.authentication.SessionAuthentication',
     ),
-    'DEFAULT_PAGINATION_CLASS': 'helper.pagination.StandardResultsSetPagination',
+    'DEFAULT_PAGINATION_CLASS': 'helpers.pagination.StandardResultsSetPagination',
 }
 
-
-CELERY_BROKER_URL = "redis://" + os.environ.get("REDIS_LOCATION")
-CELERY_RESULT_BACKEND = "redis://" + os.environ.get("REDIS_LOCATION")
+CELERY_BROKER_URL = "redis://" + os.environ.get("REDIS_LOCATION","127.0.0.1:6379/1")
+CELERY_RESULT_BACKEND = "redis://" + os.environ.get("REDIS_LOCATION", "127.0.0.1:6379/1")
 
 CELERY_BEAT_SCHEDULE = {
     'pull-incident-report': {
@@ -165,3 +161,7 @@ CELERY_BEAT_SCHEDULE = {
     },
 }
 
+# Swagger
+SWAGGER_SETTINGS = {
+    'DEFAULT_AUTO_SCHEMA_CLASS': 'helpers.swagger.CompoundTagsSchema',
+}

@@ -5,7 +5,7 @@ from .models import MonitoringSystem
 
 
 @receiver(post_save, sender=MonitoringSystem)
-def change_order_status(instance, created, *args, **kwargs):
+def set_current_page_after_create(instance, created, *args, **kwargs):
     if created:
         instance.current_page = instance.start_page
         instance.save()

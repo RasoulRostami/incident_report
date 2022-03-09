@@ -12,6 +12,7 @@ User = get_user_model()
 
 
 def pull_results(start, stop):
+    """fetch data from monitoring systems"""
     for system in MonitoringSystem.active_objects.all()[start:stop]:
         monitoring_system_service = MonitoringSystemService(system)
         monitoring_system_service.pull_incident_report()

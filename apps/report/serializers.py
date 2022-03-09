@@ -11,10 +11,16 @@ class MonitoringSystemSerializer(serializers.ModelSerializer):
 
 
 class IncidentReportSerializer(serializers.ModelSerializer):
+    translated_report_type = serializers.CharField(source='get_report_type_display', read_only=True)
+    report_type = serializers.IntegerField(default=IncidentReport.IncidentReportType.CUSTOM)
     monitoring_system = MonitoringSystemSerializer(read_only=True)
     monitoring_system_id = serializers.PrimaryKeyRelatedField(
-        queryset=MonitoringSystem.active_objects.all(), write_only=True, allow_null=True)
-    translated_report_type = serializers.CharField(source='get_report_type_display', read_only=True)
+        queryset=MonitoringSystem.active_objects.all(),
+        write_only=True,
+        allow_null=True,
+        required=False,
+        source='monitoring_system'
+    )
 
     class Meta:
         model = IncidentReport
@@ -25,7 +31,8 @@ class IncidentReportSerializer(serializers.ModelSerializer):
             'incident',
             'position',
             'report_type',
-            'translated_report_type')
+            'translated_report_type',
+        )
 
     def validate_report_type(self, value):
         if value != IncidentReport.IncidentReportType.CUSTOM:

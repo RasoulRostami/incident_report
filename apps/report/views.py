@@ -16,5 +16,5 @@ class IncidentReportView(ListModelMixin, CreateModelMixin, GenericViewSet):
 
     def get_permissions(self):
         if self.action == 'create':
-            return [IsAdminUser]
-        return [IsAuthenticated]
+            return [IsAdminUser()]
+        return [IsAuthenticated()]

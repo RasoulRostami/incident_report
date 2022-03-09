@@ -13,12 +13,18 @@ class MonitoringSystem(BaseModel):
     url = models.URLField(verbose_name=_('URL'), unique=True, help_text='URL of monitoring system')
     title = models.CharField(verbose_name=_('Title'), max_length=150, help_text='Title of monitoring system')
     start_page = models.IntegerField(verbose_name=_('Start'), default=0, help_text='First page of the URL')
-    current_page = models.IntegerField(verbose_name=_('Current'), default=0, help_text='Current page of the URL',
-                                       editable=False)
+    current_page = models.IntegerField(
+        verbose_name=_('Current'),
+        default=0,
+        help_text='Current page of the URL',
+        editable=False)
     last_status = models.IntegerField(null=True, blank=True, help_text="Status code of last request", editable=False)
     last_update = models.DateTimeField(blank=True, null=True, help_text="Last time pull the incident reports", editable=False)
     is_active = models.BooleanField(
-        default=True, help_text="A monitoring system will become inactive when a permanent error occurs", editable=False)
+        verbose_name=_('is active'),
+        default=True,
+        help_text="A monitoring system will become inactive when a permanent error occurs",
+        editable=False)
 
     objects = models.Manager()
     active_objects = ActiveMonitoringSystemManager()

@@ -1,0 +1,79 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2022-03-09 05:09+0330\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n > 1);\n"
+
+#: apps/report/models.py:13
+msgid "URL"
+msgstr "URL"
+
+#: apps/report/models.py:14
+msgid "Title"
+msgstr "عنوان"
+
+#: apps/report/models.py:15
+msgid "Start"
+msgstr "شروع"
+
+#: apps/report/models.py:17
+msgid "Current"
+msgstr "جاری"
+
+#: apps/report/models.py:24
+msgid "is active"
+msgstr "فعال"
+
+#: apps/report/models.py:36 apps/report/models.py:51
+msgid "Monitoring system"
+msgstr "سرویس مانیتورینگ"
+
+#: apps/report/models.py:37
+msgid "Monitoring systems"
+msgstr "سرویس های مانیتورینگ"
+
+#: apps/report/models.py:42
+msgid "Custom, Admin created"
+msgstr "دستی، توسط ادمین ایجاد شده"
+
+#: apps/report/models.py:43
+msgid "Pull, System pulled"
+msgstr "دریافت شده، به صورت خودکار ایجاد شده"
+
+#: apps/report/models.py:45
+msgid "Incident"
+msgstr "خطا"
+
+#: apps/report/models.py:46
+msgid "Position"
+msgstr "موقعیت"
+
+#: apps/report/models.py:54
+msgid "report type"
+msgstr "نوع گزارش"
+
+#: apps/report/models.py:62
+msgid "Incident report"
+msgstr "گزارش خطا"
+
+#: apps/report/models.py:63
+msgid "Incident reports"
+msgstr "گزارش های خطا"
+
+#: apps/report/serializers.py:39
+msgid "You are not able to create pull type"
+msgstr "شما قادر به ساخت خطا از جنس خودکار نیستید"

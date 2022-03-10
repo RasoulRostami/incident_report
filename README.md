@@ -24,7 +24,7 @@ This is a simple system to pull incident reports from monitoring systems
 pull the git repository
 
 ```bash
-https://github.com/RasoulRostami/Incident-report.git
+https://github.com/RasoulRostami/incident_report.git
 cd incident_report
 cp incident_report/.env-example incident_report/.env
 ```

@@ -115,3 +115,10 @@ class IncidentReportCreateTestCase(APITestCase):
         response = self.client.post(self.url, self.valid_data_2)
         schema_validator = Validator(incident_report_schema)
         self.assertTrue(schema_validator.validate(json.loads(response.content)), msg=schema_validator.errors)
+
+    def test_invalid_data(self):
+        self.client.force_login(self.staff)
+        data = copy.copy(self.valid_data_1)
+        data['report_type'] = IncidentReport.IncidentReportType.PULL
+        response = self.client.post(self.url, data)
+        self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST, msg=response.content)

@@ -16,10 +16,9 @@ class MonitoringSystem(BaseModel):
     current_page = models.IntegerField(
         verbose_name=_('Current page'),
         default=0,
-        help_text='Current page for pulling incident reports',
-        editable=False)
-    last_status = models.IntegerField(null=True, blank=True, help_text="Status code of last request", editable=False)
-    last_update = models.DateTimeField(blank=True, null=True, help_text="Last time pull the incident reports", editable=False)
+        help_text='Current page for pulling incident reports')
+    last_status = models.IntegerField(null=True, blank=True, help_text="Status code of last request")
+    last_update = models.DateTimeField(blank=True, null=True, help_text="Last time pull the incident reports")
     is_active = models.BooleanField(verbose_name=_('is active'), default=True)
 
     objects = models.Manager()
@@ -53,7 +52,7 @@ class IncidentReport(BaseModel):
         help_text="Admin created OR system pulled")
 
     def __str__(self):
-        return f"{self.report_type} => {self.incident}"
+        return self.incident
 
     class Meta:
         verbose_name = _('Incident report')

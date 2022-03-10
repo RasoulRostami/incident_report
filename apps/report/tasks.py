@@ -24,14 +24,15 @@ def pull_incident_report(*args, **kwargs):
     Divide the urls into four parts and four thread, run faster
     """
     step = math.ceil(MonitoringSystem.active_objects.all().count() / 4)
-    threads = list()
-    for start in range(0, step * 3 + 1, step):
-        pull_results(start, start + step)
-        thread = threading.Thread(target=pull_results, args=(start, start + step))
-        threads.append(thread)
-        thread.start()
+    if step != 0:
+        threads = list()
+        for start in range(0, step * 3 + 1, step):
+            pull_results(start, start + step)
+            thread = threading.Thread(target=pull_results, args=(start, start + step))
+            threads.append(thread)
+            thread.start()
 
-    for thread in threads:
-        thread.join()
+        for thread in threads:
+            thread.join()
 
-    return f'Pull incident reports at {timezone.now()}'
+        return f'Pull incident reports at {timezone.now()}'

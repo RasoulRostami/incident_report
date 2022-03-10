@@ -12,6 +12,11 @@ services:
       - POSTGRES_PASSWORD=postgres
     container_name: cdn_db
 
+  redis:
+    image: redis:6
+    ports:
+      - 6379:6379
+    container_name: cdn_redis
   backend:
     build: .
     ports:
@@ -26,6 +31,32 @@ services:
     command: >
       sh -c "python3 manage.py migrate &&
              python3 manage.py runserver 0.0.0.0:8000"
+
+  celery:
+    build: .
+    command: celery -A incident_report worker -l info
+    container_name: cdn_celery
+    volumes:
+      - .:/app
+    env_file:
+      - incident_report/.env
+    depends_on:
+      - db
+      - redis
+      - backend
+
+  celery-beat:
+    build: .
+    command: celery -A incident_report beat -l info
+    container_name: cdn_celery_beat
+    volumes:
+      - .:/app
+    env_file:
+      - incident_report/.env
+    depends_on:
+      - db
+      - redis
+      - backend
 
 volumes:
   postgres_data:

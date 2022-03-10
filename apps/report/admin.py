@@ -6,7 +6,11 @@ from .models import MonitoringSystem, IncidentReport
 
 @register(MonitoringSystem)
 class MonitoringSystemAdmin(BaseAdminModel):
-    list_display = ('title', 'url', 'start_page', 'last_update', 'last_status')
+    readonly_fields = ('current_page', 'last_status', 'last_update')
+    fieldsets = (
+        (None, {"fields": ['title', 'url', 'start_page', 'is_active']}),
+        ('Logs Data', {"fields": ['current_page', 'last_status', 'last_update']})
+    )
     list_filter = ('is_active',)
 
 

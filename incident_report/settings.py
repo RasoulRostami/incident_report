@@ -11,7 +11,6 @@ https://docs.djangoproject.com/en/3.2/ref/settings/
 """
 import locale
 import os
-# TODO: dockerise and remove extra .env
 from datetime import timedelta
 from pathlib import Path
 
@@ -22,10 +21,10 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/3.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = os.environ.get('SECRET_KEY', 'Hello')
+SECRET_KEY = os.environ.get('SECRET_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = os.environ.get('DEBUG', True)
+DEBUG = os.environ.get('DEBUG')
 
 ALLOWED_HOSTS = os.environ.get('ALLOWED_HOSTS', '*').split(',')
 
@@ -45,6 +44,7 @@ DJANGO_APP = [
 
 MY_APPS = [
     'apps.report.apps.ReportConfig',
+    'apps.account.apps.AccountConfig',
 ]
 
 INSTALLED_APPS = DJANGO_APP + MY_APPS
@@ -84,22 +84,14 @@ WSGI_APPLICATION = 'incident_report.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': os.environ.get('POSTGRES_NAME'),
+        'USER': os.environ.get('POSTGRES_USER'),
+        'PASSWORD': os.environ.get('POSTGRES_PASSWORD'),
+        'HOST': os.environ.get('POSTGRES_HOST'),
+        'PORT': 5432,
     }
 }
-
-# DATABASES = {
-#     'default': {
-#         'ENGINE': 'django.db.backends.postgresql',
-#         'NAME': os.environ.get('POSTGRES_NAME'),
-#         'USER': os.environ.get('POSTGRES_USER'),
-#         'PASSWORD': os.environ.get('POSTGRES_PASSWORD'),
-#         'HOST': os.environ.get('POSTGRES_HOST'),
-#         'PORT': 5432,
-#     }
-# }
-
 
 # Password validation
 # https://docs.djangoproject.com/en/3.2/ref/settings/#auth-password-validators
@@ -156,13 +148,13 @@ REST_FRAMEWORK = {
     'DEFAULT_PAGINATION_CLASS': 'helpers.pagination.StandardResultsSetPagination',
 }
 
-CELERY_BROKER_URL = "redis://" + os.environ.get("REDIS_LOCATION", "127.0.0.1:6379/1")
-CELERY_RESULT_BACKEND = "redis://" + os.environ.get("REDIS_LOCATION", "127.0.0.1:6379/1")
+CELERY_BROKER_URL = "redis://" + os.environ.get("REDIS_LOCATION")
+CELERY_RESULT_BACKEND = "redis://" + os.environ.get("REDIS_LOCATION")
 
 CELERY_BEAT_SCHEDULE = {
     'pull-incident-report': {
         'task': 'apps.report.tasks.pull_incident_report',
-        'schedule': os.environ.get("UPDATE_INCIDENT_REPORT", 1800)  # second
+        'schedule': 1000
     },
 }
 
@@ -172,8 +164,8 @@ SWAGGER_SETTINGS = {
 }
 
 SIMPLE_JWT = {
-    'ACCESS_TOKEN_LIFETIME': timedelta(minutes=int(os.environ.get('ACCESS_TOKEN_LIFETIME_MINUTES', 5))),
-    'REFRESH_TOKEN_LIFETIME': timedelta(days=int(os.environ.get('REFRESH_TOKEN_LIFETIME_DAYS', 1))),
+    'ACCESS_TOKEN_LIFETIME': timedelta(minutes=int(os.environ.get('ACCESS_TOKEN_LIFETIME_MINUTES'))),
+    'REFRESH_TOKEN_LIFETIME': timedelta(days=int(os.environ.get('REFRESH_TOKEN_LIFETIME_DAYS'))),
     'ALGORITHM': 'HS256',
     'AUTH_HEADER_TYPES': ('Bearer',),
     'AUTH_HEADER_NAME': 'HTTP_AUTHORIZATION',

@@ -5,8 +5,14 @@ ENV PYTHONUNBUFFERED=1
 
 WORKDIR /app
 
-COPY req.txt ./req.txt
-RUN pip install --upgrade pip && pip install -r req.txt
+RUN apt-get clean && apt-get update && apt-get install -y locales
+
+RUN sed -i 's/^# *\(fa_IR.UTF-8\)/\1/' /etc/locale.gen
+RUN locale-gen
+
+
+COPY requirements/ ./requirements/
+RUN pip install --upgrade pip && pip install -r requirements/dev.txt
 
 COPY . .
 
